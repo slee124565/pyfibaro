@@ -1,0 +1,21 @@
+{
+  "UNITS": {
+    "100": {
+      "unit_name": "\u5ba2\u5ef3\u51b7\u6c23", 
+      "pi_port": 8080, 
+      "daikin_slave_config_ip": "192.168.1.71:8:100", 
+      "dev_id": 617
+    }, 
+    "101": {
+      "unit_name": "\u623f\u9593\u51b7\u6c23", 
+      "pi_port": 8080, 
+      "daikin_slave_config_ip": "192.168.1.71:8:101", 
+      "dev_id": 618
+    }
+  }, 
+  "pi_ip": "192.168.1.71", 
+  "master_name": "\u51b7\u6c23\u9059\u63a7\u5668", 
+  "modbus_id": 8, 
+  "master_dev_id": 619, 
+  "pi_port": 8080
+}

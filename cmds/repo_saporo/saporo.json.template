@@ -1,0 +1,233 @@
+{
+  "name": "SAPORO", 
+  "created": 1510037112, 
+  "roomID": 0, 
+  "enabled": true, 
+  "modified": 1510037112, 
+  "actions": {
+    "setProperty": 2, 
+    "setSlider": 2, 
+    "pressButton": 1
+  }, 
+  "properties": {
+    "rows": [
+      {
+        "elements": [
+          {
+            "name": "power", 
+            "caption": "\u96fb\u6e90", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 1
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "currentH", 
+            "caption": "\u6fd5\u5ea6\u8a08", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 2
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "targetH", 
+            "caption": "\u8a2d\u5b9a\u6fd5\u5ea6", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 3
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button11", 
+            "caption": "50%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,50'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 4, 
+            "empty": false
+          }, 
+          {
+            "name": "Button12", 
+            "caption": "55%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,55'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 5, 
+            "empty": false
+          }, 
+          {
+            "name": "Button13", 
+            "caption": "60%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,60'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 6, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button21", 
+            "caption": "65%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,65'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 7, 
+            "empty": false
+          }, 
+          {
+            "name": "Button22", 
+            "caption": "70%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,70'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 8, 
+            "empty": false
+          }, 
+          {
+            "name": "Button23", 
+            "caption": "75%", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'humi,8,75'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 9, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "wind", 
+            "caption": "\u98a8\u91cf", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 10
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button31", 
+            "caption": "\u9ad8\u901f", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'fspeed,8,h'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 11, 
+            "empty": false
+          }, 
+          {
+            "name": "Button32", 
+            "caption": "\u4f4e\u901f", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'fspeed,8,l'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 12, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button41", 
+            "caption": "ON/OFF", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'set_power,8'\n\ngIsBusy = \"SAPORO_IsBusy\"\nmSyncButton = \"14\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write [' .. funcCmd .. '] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n    Trace( 'socket write [exit] result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\nend\n\nfibaro:sleep( 3000 )\nfibaro:call( selfID , \"pressButton\" , mSyncButton )\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 13, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button51", 
+            "caption": "SYNC", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "funcCmd = 'get_detail_json,8'\n\ngIsBusy = \"SAPORO_IsBusy\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\n-- set VD busy\nfibaro:setGlobal( gIsBusy , \"true\" )\nTrace( 'VD set Busy' )\n\n-- variable initial\nlocal selfID = fibaro:getSelfId()\nlocal ipAddress = fibaro:getValue( selfID , \"IPAddress\" )\nlocal tcpPort = fibaro:getValue( selfID , \"TCPPort\" )\nTrace('Socket Server IP: ' .. ipAddress .. ' listen port: ' .. tcpPort)\n\n-- sync process\nTrace('saporo sync process enter')\n\nlocal socket\nlocal status , err = pcall(\n    function() \n        socket = Net.FTcpSocket( ipAddress , tcpPort )\n        socket:setReadTimeout( 10000 )\n    end )  \nif status ~= nil and status ~= true then\n    Trace( \"socket status: \" .. tostring( status or \"\" ) )\nend\n\nif err ~= nil then\n    Trace( \"socket err: \" .. tostring( err or \"\" ), _ERROR )\n    fibaro:call( selfID , \"setProperty\" , \"ui.status.value\" , 'SCK ERROR' )\nelse\n    local bytes, errCode, rdata\n\n    bytes, errCode = socket:write(funcCmd)\n    Trace( 'socket write result code ' .. tostring(errCode) .. ' bytes: ' .. tostring(bytes) )\n    rdata, errCode = socket:read()\n    Trace( 'socket read result code ' .. tostring(errCode) .. ' data: ' .. tostring(rdata) )\n    bytes, errCode = socket:write('exit')\n\n    local dev_detail = json.decode( rdata )\n    fibaro:call( selfID , \"setProperty\" , \"ui.power.value\" , dev_detail.power.text )\n    fibaro:call( selfID , \"setProperty\" , \"ui.currentH.value\" , dev_detail.func_current.text .. '%' )\n    fibaro:call( selfID , \"setProperty\" , \"ui.targetH.value\" , dev_detail.func_target.text .. '%' )\n    fibaro:call( selfID , \"setProperty\" , \"ui.wind.value\" , dev_detail.fan.text )\nend\n\n-- set VD Idle\nfibaro:setGlobal( gIsBusy , \"false\" )\nTrace( 'VD set Idle' )\n", 
+            "main": false, 
+            "id": 14, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }
+    ], 
+    "log": "", 
+    "deviceIcon": 0, 
+    "ip": "192.168.1.71", 
+    "currentIcon": "0", 
+    "ui.power.value": "OFF", 
+    "ui.currentH.value": "55%", 
+    "logTemp": "", 
+    "ui.targetH.value": "65%", 
+    "visible": "true", 
+    "mainLoop": "--[[\n  @brief  \u838e\u666e\u7f85\u9664\u6fd5\u6a5f\u9059\u63a7\u5668\n\n  @note   \u8a18\u5f97\u5efa\u7acbGlobal Value [SAPORO_IsBusy]\n\t\t  \u8a18\u5f97\u586b\u5bebIP\u53caPort\n          \u6839\u64da\u9664\u6fd5\u6a5fmodbus address\u7684\u4e0d\u540c\uff0c\u9700\u8981\u540c\u6b65\u4fee\u6539\u529f\u80fd\u6307\u4ee4\u7684\u5c0d\u61c9\u53c3\u6578\n          \u4f8b\u5982\uff1a\n            modebus address\u70ba 1\uff0c\u96fb\u6e90\u8a2d\u5b9a\u6307\u4ee4\u70ba 'set_power,1'\n            modebus address\u70ba 4\uff0c\u96fb\u6e90\u8a2d\u5b9a\u6307\u4ee4\u70ba 'set_power,4'\n\n  @gIsBusy:\n          \u63d0\u4f9bVD <main loop>\u7528\u4f86\u67e5\u8a62VD\u76ee\u524d\u662f\u5426\u70ba\u5fd9\u788c\u72c0\u614b\n\n  @mSyncButton:\n\t\t  <SYNC> Button ID\n          \n  @<main> loop:\n          \u900f\u904eHC2\u5b9a\u671f\u57f7\u884cmain loop\u7684\u6a5f\u5236\uff0c\u518d\u555f\u52d5\u6642\u5019\uff0c\u5148\u6aa2\u67e5gIsBusy\u7684\u6578\u503c\uff0c\n          \u78ba\u8a8dVD\u662f\u5426\u70ba\u5fd9\u788c\u72c0\u614b\uff0c\u82e5\u662fVD\u8655\u65bc\u5fd9\u788c\u72c0\u614b\uff0c\u5247\u4e0d\u57f7\u884c\u4efb\u4f55\u52d5\u4f5c\uff0c\n          \u82e5\u662fVD\u8655\u65bc\u975e\u5fd9\u788c\u72c0\u614b\uff0c\u5247\u900f\u904e<pressButton> API\u555f\u52d5<SYNC>button\uff0c\n          \u9032\u884cVD\u986f\u793a\u8cc7\u8a0a\u66f4\u65b0\u4f5c\u696d\u3002\n\n  @<SYNC> button:\n          \u555f\u52d5VD\u986f\u793a\u8cc7\u8a0a\u66f4\u65b0\u4f5c\u696d(\u900f\u904epi box\u8b80\u53d6\u8a2d\u5099\u76ee\u524d\u72c0\u614b\u8cc7\u8a0a)\n\n  @<func> button: (on/off,fan ...)\n          \u555f\u52d5VD\u529f\u80fd\u8a2d\u5b9a\u4f5c\u696d\n--]]\n\nmSyncButton = \"14\"\ngIsBusy = \"SAPORO_IsBusy\"\n\n-- debug function declare\n_DEBUG = 10\n_INFO = 20\n_WARNING = 30\n_ERROR = 40\nlogLevel = _DEBUG\n\nfunction Trace( _text , _weight )\n    _weight = _weight or _DEBUG\n  \tif _weight == _INFO then\n    \t_color = 'white'\n    elseif _weight >= _WARNING then\n    \t_color = 'red'\n    else\n    \t_color = \"gray\"\n    end\n    if _weight >= logLevel then\n        fibaro:debug( '<span style=\"color:' .. _color .. '\">' .. tostring( _text ) .. '</span><p>' )\n    end\nend\n\nlocal isBusy = fibaro:getGlobalValue( gIsBusy ) == \"true\"\n\nif not isBusy then\n    Trace( 'system idle, start sync process' )\n    mSelfId = fibaro:getSelfId()\n    fibaro:call( mSelfId , \"pressButton\" , mSyncButton )\nelse\n    Trace( 'system busy, skip sync process' )\nend\n", 
+    "ui.wind.value": "AUTO", 
+    "port": 5050
+  }, 
+  "visible": true, 
+  "sortOrder": 191, 
+  "type": "virtual_device", 
+  "id": 1207
+}

@@ -1,0 +1,254 @@
+{
+  "name": "DAIKIN_MASTER", 
+  "created": 1510038393, 
+  "roomID": 0, 
+  "enabled": true, 
+  "modified": 1510038393, 
+  "actions": {
+    "setProperty": 2, 
+    "setSlider": 2, 
+    "pressButton": 1
+  }, 
+  "properties": {
+    "rows": [
+      {
+        "elements": [
+          {
+            "name": "ID", 
+            "caption": "\u88dd\u7f6e", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": true, 
+            "id": 1
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button11", 
+            "caption": "\u2190", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal acID = fibaro:getValue( selfID , \"ui.ID.value\" )\nlocal rawDatas = fibaro:getGlobal( gDatas )\nlocal datas = json.decode( rawDatas )\nlocal devices = datas.elements\nlocal deviceLength = #devices\nlocal findIdx = 0\nfor i = 1 , deviceLength do\n  if devices[ i ].name == acID then\n    findIdx = i\n    break\n  end\nend\n\nlocal changeIdx = findIdx - 1\n\nif deviceLength > 2 then\n  if changeIdx <= 0 then\n    changeIdx = deviceLength - 1\n  end\n  fibaro:call( selfID , \"setProperty\" , \"ui.ID.value\" , devices[ changeIdx ].name )\n  local state = \"\"\n  if devices[ changeIdx ].on then\n    local modeIdx = devices[ changeIdx ].mode\n    state = datas.modeNames[ modeIdx ] .. \" \" \n    state = state .. datas.windNames[ devices[ changeIdx ].wind ] .. \" \" \n    if datas.tempShowModes[ modeIdx ] then\n      state = state .. devices[ changeIdx ].temp .. \"\u2103\"\n    else\n      state = state .. \"\u3000 \u3000\"\n    end\n  end\n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n\n  local cmd = fibaro:getGlobal( gCmds ) .. \" EXIT\"\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 2, 
+            "empty": false
+          }, 
+          {
+            "name": "Button12", 
+            "caption": "\u5168\u9078", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal acID = fibaro:getValue( selfID , \"ui.ID.value\" )\nlocal rawDatas = fibaro:getGlobal( gDatas )\nlocal datas = json.decode( rawDatas )\nlocal devices = datas.elements\nlocal deviceLength = #devices\nlocal findIdx = 0\nfor i = 1 , deviceLength do\n  if devices[ i ].name == acID then\n    findIdx = i\n    break\n  end\nend\n\nlocal changeIdx = deviceLength\n\nif deviceLength > 2 and findIdx ~= changeIdx then\n  fibaro:call( selfID , \"setProperty\" , \"ui.ID.value\" , devices[ changeIdx ].name )\n  local state = \"\"\n  if devices[ changeIdx ].on then\n    local modeIdx = devices[ changeIdx ].mode\n    state = datas.modeNames[ modeIdx ] .. \" \" \n    state = state .. datas.windNames[ devices[ changeIdx ].wind ] .. \" \" \n    if datas.tempShowModes[ modeIdx ] then\n      state = state .. devices[ changeIdx ].temp .. \"\u2103\"\n    else\n      state = state .. \"\u3000 \u3000\"\n    end\n  end\n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n  \n  local cmd = fibaro:getGlobal( gCmds ) .. \" EXIT\"\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 3, 
+            "empty": false
+          }, 
+          {
+            "name": "button13", 
+            "caption": "\u2192", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal acID = fibaro:getValue( selfID , \"ui.ID.value\" )\nlocal rawDatas = fibaro:getGlobal( gDatas )\nlocal datas = json.decode( rawDatas )\nlocal devices = datas.elements\nlocal deviceLength = #devices\nlocal findIdx = 0\nfor i = 1 , deviceLength do\n  if devices[ i ].name == acID then\n    findIdx = i\n    break\n  end\nend\n\nlocal changeIdx = findIdx + 1\n\nif deviceLength > 2 then\n  if changeIdx >= deviceLength then\n    changeIdx = 1\n  end\n  fibaro:call( selfID , \"setProperty\" , \"ui.ID.value\" , devices[ changeIdx ].name )\n  local state = \"\"\n  if devices[ changeIdx ].on then\n    local modeIdx = devices[ changeIdx ].mode\n    state = datas.modeNames[ modeIdx ] .. \" \" \n    state = state .. datas.windNames[ devices[ changeIdx ].wind ] .. \" \" \n    if datas.tempShowModes[ modeIdx ] then\n      state = state .. devices[ changeIdx ].temp .. \"\u2103\"\n    else\n      state = state .. \"\u3000 \u3000\"\n    end\n  end\n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n  \n  local cmd = fibaro:getGlobal( gCmds ) .. \" EXIT\"\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 4, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button21", 
+            "caption": "On / Off", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal acID = fibaro:getValue( selfID , \"ui.ID.value\" )\nlocal rawDatas = fibaro:getGlobal( gDatas )\nlocal datas = json.decode( rawDatas )\nlocal devices = datas.elements\nlocal deviceLength = #devices\nlocal findIdx = 0\nfor i = 1 , deviceLength do\n  if devices[ i ].name == acID then\n    findIdx = i\n    break\n  end\nend\n\nlocal on = true\nif devices[ findIdx ].on then\n  on = false \nend\ndevices[ findIdx ].on = on\n\nif findIdx == deviceLength then\n  for i = 1 , deviceLength - 1 do\n    devices[ i ].on = on\n  end\nelse\n  local allSame = true\n  for i = 1 , deviceLength - 1 do\n    if devices[ i ].on ~= on then\n      allSame = false\n      break\n    end\n  end\n  if allSame then\n    devices[ deviceLength ].on = on\n  end\nend\n\nlocal state = \"\"\nif devices[ findIdx ].on then\n  local modeIdx = devices[ findIdx ].mode\n  state = datas.modeNames[ modeIdx ] .. \" \"\n  state = state .. datas.windNames[ devices[ findIdx ].wind ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\nend\n\nfibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n \nfibaro:setGlobal( gDatas , json.encode( datas ) )\nlocal cmd = fibaro:getGlobal( gCmds ) .. \" POWER_\" .. findIdx\nfibaro:debug( cmd )\nfibaro:setGlobal( gCmds , cmd )", 
+            "main": true, 
+            "id": 5, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "State", 
+            "caption": "\u72c0\u614b", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 6
+          }
+        ], 
+        "type": "label"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button31", 
+            "caption": "\u6696\u6c23", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal modeIdx = 1\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  if devices[ findIdx ].modeEnable[ modeIdx ] then\n    devices[ findIdx ].mode = modeIdx \n  else\n    local info = devices[ findIdx ].name .. \" no \" .. datas.modeNames[ devices[ findIdx ].mode ] .. \" mode, can't setting.\u3000\u3000\u3000\n\"\n    fibaro:call( selfID , \"setProperty\" , \"ui.Info.value\" , info )\n  end\n  \n  if findIdx == deviceLength then\n    local windIdx = devices[ deviceLength ].wind\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].mode ~= modeIdx and devices[ i ].modeEnable[ modeIdx ] and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].mode = modeIdx\n    end\n  end\n  \n  local state = datas.modeNames[ devices[ findIdx ].mode ] .. \" \" \n  state = state .. datas.windNames[ devices[ findIdx ].wind ] .. \" \" \n  if datas.tempShowModes[ devices[ findIdx ].mode ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 7, 
+            "empty": false
+          }, 
+          {
+            "name": "Button32", 
+            "caption": "\u51b7\u6c23", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal modeIdx = 2\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n\n  if devices[ findIdx ].modeEnable[ modeIdx ] then\n    devices[ findIdx ].mode = modeIdx \n  else\n    local info = devices[ findIdx ].name .. \" no \" .. datas.modeNames[ devices[ findIdx ].mode ] .. \" mode, can't setting.\u3000\u3000\u3000\n\"\n    fibaro:call( selfID , \"setProperty\" , \"ui.Info.value\" , info )\n  end\n  \n  if findIdx == deviceLength then\n    local windIdx = devices[ deviceLength ].wind\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].mode ~= modeIdx and devices[ i ].modeEnable[ modeIdx ] and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].mode = modeIdx\n    end\n  end\n  \n  local state = datas.modeNames[ devices[ findIdx ].mode ] .. \" \" \n  state = state .. datas.windNames[ devices[ findIdx ].wind ] .. \" \" \n  if datas.tempShowModes[ devices[ findIdx ].mode ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 8, 
+            "empty": false
+          }, 
+          {
+            "name": "Button33", 
+            "caption": "\u9664\u6fd5", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal modeIdx = 3\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  if devices[ findIdx ].modeEnable[ modeIdx ] then\n    devices[ findIdx ].mode = modeIdx \n  else\n    local info = devices[ findIdx ].name .. \" no \" .. datas.modeNames[ devices[ findIdx ].mode ] .. \" mode, can't setting.\u3000\u3000\u3000\n\"\n    fibaro:call( selfID , \"setProperty\" , \"ui.Info.value\" , info )\n  end\n  \n  if findIdx == deviceLength then\n    local windIdx = devices[ deviceLength ].wind\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].mode ~= modeIdx and devices[ i ].modeEnable[ modeIdx ] and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].mode = modeIdx\n    end\n  end\n  \n  local state = datas.modeNames[ devices[ findIdx ].mode ] .. \" \" \n  state = state .. datas.windNames[ devices[ findIdx ].wind ] .. \" \" \n  if datas.tempShowModes[ devices[ findIdx ].mode ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 9, 
+            "empty": false
+          }, 
+          {
+            "name": "Button34", 
+            "caption": "\u9001\u98a8", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal modeIdx = 4\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  if devices[ findIdx ].modeEnable[ modeIdx ] then\n    devices[ findIdx ].mode = modeIdx \n  else\n    local info = devices[ findIdx ].name .. \" no \" .. datas.modeNames[ devices[ findIdx ].mode ] .. \" mode, can't setting.\u3000\u3000\u3000\n\"\n    fibaro:call( selfID , \"setProperty\" , \"ui.Info.value\" , info )\n  end\n  \n  if findIdx == deviceLength then\n    local windIdx = devices[ deviceLength ].wind\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].mode ~= modeIdx and devices[ i ].modeEnable[ modeIdx ] and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].mode = modeIdx\n    end\n  end\n  \n  local state = datas.modeNames[ devices[ findIdx ].mode ] .. \" \" \n  state = state .. datas.windNames[ devices[ findIdx ].wind ] .. \" \" \n  if datas.tempShowModes[ devices[ findIdx ].mode ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 10, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button41", 
+            "caption": "\u5fae\u98a8", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal windIdx = 1\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  devices[ findIdx ].wind = windIdx \n  \n  if findIdx == deviceLength then\n    local modeIdx = devices[ deviceLength ].mode\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].wind ~= windIdx and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].wind = windIdx\n    end\n  end\n  \n  local modeIdx = devices[ findIdx ].mode\n  local state = datas.modeNames[ modeIdx ] .. \" \" \n  state = state .. datas.windNames[ windIdx ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 11, 
+            "empty": false
+          }, 
+          {
+            "name": "Button42", 
+            "caption": "\u5f31\u98a8", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal windIdx = 2\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  devices[ findIdx ].wind = windIdx \n  \n  if findIdx == deviceLength then\n    local modeIdx = devices[ deviceLength ].mode\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].wind ~= windIdx and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].wind = windIdx\n    end\n  end\n  \n  local modeIdx = devices[ findIdx ].mode\n  local state = datas.modeNames[ modeIdx ] .. \" \" \n  state = state .. datas.windNames[ windIdx ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 12, 
+            "empty": false
+          }, 
+          {
+            "name": "Button43", 
+            "caption": "\u5f37\u98a8", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\nlocal windIdx = 3\n\nlocal selfID = fibaro:getSelfId()\nif fibaro:getValue( selfID , \"ui.State.value\" ) ~= \"\" then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  devices[ findIdx ].wind = windIdx \n  \n  if findIdx == deviceLength then\n    local modeIdx = devices[ deviceLength ].mode\n    local tempValue = devices[ deviceLength ].temp\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].wind ~= windIdx and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].wind = windIdx\n    end\n  end\n  \n  local modeIdx = devices[ findIdx ].mode\n  local state = datas.modeNames[ modeIdx ] .. \" \" \n  state = state .. datas.windNames[ windIdx ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 13, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Button51", 
+            "caption": "\u25b2", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal state = fibaro:getValue( selfID , \"ui.State.value\" )\nlocal canModify = ( state:match( \"%d+\" ) ~= nil )\nif canModify then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  local modeIdx = devices[ findIdx ].mode\n  local windIdx = devices[ findIdx ].wind\n  local tempValue = devices[ findIdx ].temp + 1\n  local maxTemp = datas.tempMax\n  if tempValue > maxTemp then\n    tempValue = maxTemp\n  end\n  devices[ findIdx ].temp = tempValue\n  \n  if findIdx == deviceLength then\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].temp ~= tempValue and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].temp = tempValue\n    end\n  end\n  \n  state = datas.modeNames[ modeIdx ] .. \" \" \n  state = state .. datas.windNames[ windIdx ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 14, 
+            "empty": false
+          }, 
+          {
+            "name": "Button52", 
+            "caption": "\u25bc", 
+            "favourite": false, 
+            "buttonIcon": 0, 
+            "waitForResponse": false, 
+            "lua": true, 
+            "msg": "local gDatas = \"AC_Ctrl_Datas\"\nlocal gCmds = \"AC_Ctrl_Cmds\"\n\nlocal selfID = fibaro:getSelfId()\nlocal state = fibaro:getValue( selfID , \"ui.State.value\" )\nlocal canModify = ( state:match( \"%d+\" ) ~= nil )\nif canModify then\n  local acID = fibaro:getValue( selfID , \"ui.ID.value\" )\n  local rawDatas = fibaro:getGlobal( gDatas )\n  local datas = json.decode( rawDatas )\n  local devices = datas.elements\n  local deviceLength = #devices\n  local findIdx = 0\n  for i = 1 , deviceLength do\n    if devices[ i ].name == acID then\n      findIdx = i\n      break\n    end\n  end\n  \n  local modeIdx = devices[ findIdx ].mode\n  local windIdx = devices[ findIdx ].wind\n  local tempValue = devices[ findIdx ].temp - 1\n  local minTemp = datas.tempMin\n  if tempValue < minTemp then\n    tempValue = minTemp\n  end\n  devices[ findIdx ].temp = tempValue\n\n  if findIdx == deviceLength then\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].on and devices[ i ].modeEnable[ modeIdx ] then\n        devices[ i ].mode = modeIdx \n        devices[ i ].wind = windIdx\n        devices[ i ].temp = tempValue\n      end\n    end\n  else\n    local allSame = true\n    for i = 1 , deviceLength - 1 do\n      if devices[ i ].temp ~= tempValue and devices[ i ].on then\n        allSame = false\n        break\n      end\n    end\n    if allSame then\n      devices[ deviceLength ].temp = tempValue\n    end\n  end\n  \n  state = datas.modeNames[ modeIdx ] .. \" \" \n  state = state .. datas.windNames[ windIdx ] .. \" \" \n  if datas.tempShowModes[ modeIdx ] then\n    state = state .. devices[ findIdx ].temp .. \"\u2103\"\n  else\n    state = state .. \"\u3000 \u3000\"\n  end\n  \n  fibaro:call( selfID , \"setProperty\" , \"ui.State.value\" , state )\n   \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n  local cmd = fibaro:getGlobal( gCmds ) .. \" SETTING_\" .. findIdx\n  fibaro:setGlobal( gCmds , cmd )\nend", 
+            "main": false, 
+            "id": 15, 
+            "empty": false
+          }
+        ], 
+        "type": "button"
+      }, 
+      {
+        "elements": [
+          {
+            "name": "Info", 
+            "caption": "", 
+            "favourite": false, 
+            "waitForResponse": false, 
+            "lua": false, 
+            "main": false, 
+            "id": 16
+          }
+        ], 
+        "type": "label"
+      }
+    ], 
+    "log": "", 
+    "deviceIcon": 0, 
+    "ip": "", 
+    "currentIcon": "0", 
+    "logTemp": "", 
+    "ui.State.value": "", 
+    "visible": "true", 
+    "ui.Info.value": "", 
+    "ui.ID.value": "\u5168\u90e8", 
+    "mainLoop": "-- \u8a18\u5f97\u5efa\u7acbglobal value\n\nif datas == nil then\n  datas = { elements = {} }\n  devices = datas.elements\n  \n  --[[\u53c3\u6578\u8a2d\u5b9a \u958b\u59cb]]--\n  \n  -- \u6240\u6709\u51b7\u6c23ID\uff0c\u7a0b\u5f0f\u6703\u81ea\u52d5\u52a0\u5165 \u63a7\u5236\u5168\u90e8\u51b7\u6c23\u4f46ID\u70ba0\u7684\u51b7\u6c23\n  deviceIDs = \n  { \n    1241,\n  }\n  \n  -- HC2 \u8cc7\u8a0a\n  hc2IP = \"192.168.1.10\"\n  hc2Port = 80\n  hc2Account = \"tailungfu@gmail.com\"\n  hc2Password = \"FLHflhtest12345\"\n  \n  -- \u529f\u80fd\u7bc4\u570d\uff0c\u76ee\u524d\u5beb\u6b7b\u4e0d\u80fd\u52d5\n  modes = { \"\u6696\u6c23\" , \"\u51b7\u6c23\" , \"\u9664\u6fd5\" , \"\u9001\u98a8\" }\n  tempDisplayModes = { true , true , true , true }\n  modeRange = #modes\n  defaultMode = 2\n  \n  -- \u98a8\u91cf\u7bc4\u570d\uff0c\u76ee\u524d\u5beb\u6b7b\u4e0d\u80fd\u52d5\n  winds = { \"\u5fae\u98a8\" , \"\u5f31\u98a8\" , \"\u5f37\u98a8\" }\n  windRange = #winds\n  defaultWind = 2\n  \n  -- \u6eab\u5ea6\u7bc4\u570d\n  maxTemp = 32\n  minTemp = 16\n  tempRange = maxTemp - minTemp + 1\n  defaultTemp = math.floor( ( maxTemp + minTemp ) / 2 )\n  \n  -- global value\n  gDatas = \"AC_Ctrl_Datas\"\n  gCmds = \"AC_Ctrl_Cmds\"\n  \n  -- \u66f4\u65b0\u983b\u7387\n  cmdUpdateSec = 1  -- \u6307\u4ee4\u8f38\u5165\u5b8c\u591a\u4e45\u5f8c\u9001\u51fa\n  infoCleanSec = 5  -- \u8cc7\u8a0a\u5728\u756b\u9762\u7dad\u6301\u6642\u9593\n  \n  -- \u547d\u4ee4\uff0c\u9700\u8207\u6309\u9215\u9001\u51fa\u547d\u4ee4\u76f8\u540c\n  exitCmd = \" EXIT\"\n  powCmd = \" POWER_\"\n  setCmd = \" SETTING_\"\n  \n  -- debug\n  debugWeights =\n  {\n    all = 10 ,\n    detail = 5 ,\n    baisc = 1 ,\n    none = 0 ,\n  }\n  debugWeight = debugWeights.all\n  \n  --[[\u53c3\u6578\u8a2d\u5b9a \u7d50\u675f]]--\n  \n  Trace = function( color , text , weight )\n    if debugWeight > weight then\n      fibaro:debug( '<span style=\"color:' .. color .. '\">' .. text .. '</span>' )\n    end\n  end\n  \n  local hasModeTextLength = #\"String to send\" -- \u7d05\u5916\u7dda\u6307\u4ee4\u4e26\u9808\u8d85\u904e\u6b64\u5b57\u4e32\u9577\u5ea6\n    \n  -- \u532f\u5165\u4e26\u6aa2\u67e5device\u662f\u5426\u7b26\u5408\u898f\u7bc4\n  local socket = Net.FHttp( hc2IP , hc2Port )\n  socket:setBasicAuthentication( hc2Account , hc2Password )\n  for i = 1 , #deviceIDs do   \n    local response , status , errorCode = socket:GET( \"/api/virtualDevices/\" .. deviceIDs[ i ] )\n    if tonumber( status ) >= 200 and tonumber( status ) < 300 and errorCode == 0 then\n      local responseTable = json.decode( response )\n      local rows = responseTable.properties.rows\n      local match = true\n      Trace(\"green\", '#rows: ' .. tostring(#rows), 0)\n      if #rows ~= 1 + tempRange * 2 + 2 then\n        match = false\n        Trace(\"green\",'#rows' .. tostring(#rows) .. ' not match ' .. tostring(1 + tempRange * 2 + 2), 0)\n      elseif #( rows[ 1 ].elements ) ~= 2 or rows[ 1 ].type ~= \"button\" then\n        match = false\n        Trace(\"green\",'#( rows[ 1 ].elements ) ' ..  tostring(#( rows[ 1 ].elements )) .. ' not match', 0)\n      else\n        for j = 2 , #rows do\n          if #( rows[ j ].elements ) ~= windRange or rows[ j ].type ~= \"button\" then\n            match = false\n            break\n          end\n        end\n      end\n      if match then  \n        local tempTable = \n        { \n          deviceID = deviceIDs[ i ] ,\n          name = responseTable.name , \n          modeEnable = \n          {\n            #( rows[ 2 ].elements[ 1 ].msg ) > hasModeTextLength ,\n            #( rows[ 2 + tempRange ].elements[ 1 ].msg ) > hasModeTextLength ,\n            #( rows[ 2 + tempRange * 2 ].elements[ 1 ].msg ) > hasModeTextLength ,\n            #( rows[ 3 + tempRange * 2 ].elements[ 1 ].msg ) > hasModeTextLength ,\n          },\n        }\n        table.insert( devices , tempTable )\n        Trace( \"green\" , \"virtual device #\" .. deviceIDs[ i ] .. \" responseTable.name\" .. \" import success\" , 0 )\n      else\n        Trace( \"red\" , \"virtual device #\" .. deviceIDs[ i ] .. \" responseTable.name\" .. \" is not correspond \" , 0 )\n      end\n    else\n      Trace( \"red\" , \"There is no virtual device #\" .. deviceIDs[ i ] , 0 )\n    end\n  end\n  \n  -- \u63a7\u5236\u5168\u90e8\u7684\u51b7\u6c23\n  local tempTable =\n  {\n    deviceID = 0 ,\n    name = \"\u5168\u90e8\" , \n    modeEnable = \n    {\n      true ,\n      true ,\n      true ,\n      true ,\n    },\n  }\n  table.insert( devices , tempTable )\n  \n  -- \u51b7\u6c23\u8cc7\u6599\u88dc\u5168\u521d\u59cb\u5316\n  for i = 1 , #( devices ) do\n    devices[ i ].on = false\n    devices[ i ].mode = defaultMode\n    if devices[ i ].modeEnable[ defaultMode ] ~= true then\n      for j = 1 , modeRange do\n        if devices[ i ].modeEnable[ j ] then\n          devices[ i ].mode = j\n          break\n        end\n      end\n    end\n    devices[ i ].temp = defaultTemp\n    devices[ i ].wind = defaultWind\n  end\n  \n  -- \u51b7\u6c23\u5e38\u6578\u5132\u5b58\n  datas.modeNames = modes\n  datas.windNames = winds\n  datas.tempShowModes = tempDisplayModes\n  datas.tempMax = maxTemp\n  datas.tempMin = minTemp\n  \n  fibaro:setGlobal( gDatas , json.encode( datas ) )\n\n  --[[\u6210\u54e1\u8b8a\u6578 \u958b\u59cb]]--\n  \n  selfId = fibaro:getSelfId()\n  cmdTimeStamp = 0\t\t\t-- \u547d\u4ee4\u591a\u4e45\u66f4\u65b0\u4e00\u6b21\uff0c\u5207\u63db\u51b7\u6c23\u6703\u99ac\u4e0a\u57f7\u884c\u4e4b\u524d\u547d\u4ee4\n  infoTimeStamp = 0\t\t\t-- \u9059\u63a7\u5668\u986f\u793a\u8cc7\u8a0a\u8981\u505c\u7559\u591a\u4e45\n  lastCmds = \"\"\t\t\t\t-- \u5132\u5b58\u547d\u4ee4\u5b57\u4e32\n  deviceCount = #devices\n  \n  --[[\u6210\u54e1\u8b8a\u6578\u7d50\u675f]]--\n  \n  -- \u986f\u793a\u8a2d\u5b9a\n  displayID = deviceCount\n  if deviceCount <= 2 then \n    displayID = 1\n  end\n  fibaro:call( selfId , \"setProperty\" , \"ui.ID.value\" , devices[ displayID ].name )\n  local state = \"\"\n  if devices[ displayID ].on then\n    local modeIdx = devices[ displayID ].mode\n    state = modes[ modeIdx ] .. \" \" \n    state = state .. winds[ devices[ displayID ].wind ] .. \" \" \n    if tempDisplayModes[ modeIdx ] then\n      state = state .. devices[ displayID ].temp .. \"\u2103\"\n    else\n      state = state .. \"\u3000 \u3000\"\n    end\n  end\n  fibaro:call( selfId , \"setProperty\" , \"ui.State.value\" , state )\n  fibaro:call( selfId , \"setProperty\" , \"ui.Info.value\" , \"\" )  \n  \n-- \u986f\u793a\u532f\u5165\u88dd\u7f6e\u8cc7\u8a0a\n  if debugWeight >= debugWeights.all then\n    for i = 1 , deviceCount do\n      fibaro:debug( devices[ i ].deviceID )\n      fibaro:debug( devices[ i ].name )\n      fibaro:debug( \"on : \" .. tostring( devices[ i ].on ) )\n      fibaro:debug( \"modeEnable : \" .. json.encode( devices[ i ].modeEnable ) )\n      fibaro:debug( modes[ devices[ i ].mode ] .. \" \" .. winds[ devices[ i ].wind ] .. \" \" .. devices[ i ].temp .. \"\u2103\" )\n    end\n  end\nend\n\nfunction DoPowerOff( idx )\n  fibaro:call( devices[ idx ].deviceID , \"pressButton\" , \"2\" )\nend\n\nfunction DoSetting( idx )\n  local buttonId = 2 + devices[ idx ].wind\n  local modeId = devices[ idx ].mode\n  if modeId == 1 then\n    buttonId = buttonId + ( maxTemp - devices[ idx ].temp ) * windRange\n  elseif modeId == 2 then\n    buttonId = buttonId + ( tempRange + maxTemp - devices[ idx ].temp ) * windRange\n  elseif modeId == 3 then\n    fibaro:debug(buttonId .. ',' .. tempRange .. ',' .. maxTemp .. ',' .. devices[ idx ].temp .. ',' .. windRange)\n    buttonId = buttonId + 2 + ( 2 * tempRange ) * windRange - 2\n  elseif modeId == 4 then\n    buttonId = buttonId + 2 + ( 2 * tempRange ) * windRange + 3 - 2\n  else\n    Trace( \"red\" , \"errow mode : \" .. modeId , 0 )\n  end\n  fibaro:debug('DoSetting, '.. devices[ idx ].deviceID .. ', pressButton, ' .. buttonId)\n  fibaro:call( devices[ idx ].deviceID , \"pressButton\" , tostring( buttonId ) )\nend\n\nfunction DoCmds( cmds )\n  fibaro:debug('DoCmds: ' .. cmds)\n  if cmds == \"\" then \n    Trace( \"white\" , \"no cmds\" , 9 )\n    return \n  end\n  \n  -- \u6b64\u6642\u624d\u9700\u8981\u66f4\u65b0\u72c0\u614b\n  local temp = fibaro:getGlobal( gDatas )\n  datas = json.decode( temp )\n  devices = datas.elements\n  \n  local idx , powCount = 0 , 0\n  for cmd in cmds:gmatch( powCmd .. \"(%d+)\" ) do\n    powCount = powCount + 1\n    idx = tonumber( cmd )\n  end\n  Trace( \"white\" , \"power count = \" .. powCount , 9 )\n  if powCount ~= 0 then\n    if idx ~= nil then\n      Trace( \"white\" , \"idx form power cmd = \" .. idx , 9 )\n    else\n      Trace( \"red\" , \"cann't find idx form power cmd\" , 0 )\n    end\n  else\n    idx = tonumber( cmds:match( setCmd .. \"(%d+)\" ) )\n    if idx ~= nil then\n      Trace( \"white\" , \"idx form setting cmd = \" .. idx , 9 )\n    else\n      if cmds:find( setCmd ) ~= nil then\n        Trace( \"red\" , \"cann't find idx form setting cmd\" , 0 )\n      else\n        Trace( \"yellow\" , \"only exit cmd : \" .. cmds , 4 )\n      end\n    end\n  end\n\n  if idx == nil or idx <= 0 then return end\n  -- \u95dc\u6a5f\n  if devices[ idx ].on == false then\n    Trace( \"yellow\" , \"#\" .. idx .. \" power off\" , 4 )\n    if idx == deviceCount then\n      for i = 1 , deviceCount - 1 do\n        DoPowerOff( i )\n      end\n    else\n      DoPowerOff( idx )\n    end\n  -- \u8a2d\u503c\n  elseif idx ~= -1 or idx ~= nil then\n    Trace( \"yellow\" , \"#\" .. idx .. \" setting\" , 4 )\n    local info = \"\"\n    if idx == deviceCount then\n      for i = 1 , deviceCount - 1 do\n        if devices[ i ].on == false then\n          info = info .. devices[ i ].name .. \" is turn off, can't setting.\"\n          infoTimeStamp = os.time()\n        else\n          if cmds:match( setCmd ) ~= nil and devices[ i ].modeEnable[ devices[ deviceCount ].mode ] == false then\n            info = info .. devices[ i ].name .. \" no \" .. modes[ devices[ deviceCount ].mode ] .. \" mode, can't setting.\"\n            infoTimeStamp = os.time()\n          end\n          DoSetting( i )\n        end\n      end\n      fibaro:call( selfId , \"setProperty\" , \"ui.Info.value\" , info )\n    else\n      DoSetting( idx )\n    end\n  end\nend\n\nfunction UpdateCmds( cmds , isAll )\n  local begin , head , tail = 1 , 1 , 1\n  while head ~= nil do\n    head , tail = cmds:find( exitCmd , begin )\n    Trace( \"purple\" , \"begin: \" .. tostring( begin ) .. \" head: \" .. tostring( head ) .. \" tail: \" .. tostring( tail ) , 9 )\n    if head == nil then\n      if begin == 1 or isAll then\n        Trace( \"green\" , \"do last cmds : \" .. cmds:sub( begin ) , 9 )\n        DoCmds( cmds:sub( begin ) )\n      end\n    else\n      Trace( \"green\" , \"do cmds : \" .. cmds:sub( begin , head - 1 ) , 9 )\n      DoCmds( cmds:sub( begin , head - 1 ) )\n      begin = tail + 1\n    end\n  end\n  \n  local ret = cmds:sub( begin )\n  Trace( \"purple\" , \"is empty? \" .. tostring( ret == nil ) .. \" / \" .. tostring( begin == 1 ) .. \" : \" .. begin , 9 )\n  if ret == nil or begin == 1 then\n    ret = \"\"\n  end\n  Trace( \"purple\" , \"return : \" .. ret , 9 )\n  return ret\nend\n\n-- \u4e3b\u8ff4\u5708\u958b\u59cb\nwhile true do\n\nlocal time = os.time()\n\nlocal cmds = fibaro:getGlobal( gCmds )\n\nif cmds ~= \"\" then\n  fibaro:debug('gCmds:' .. cmds)\n  lastCmds = lastCmds .. cmds\n  fibaro:setGlobal( gCmds , \"\" )\n  cmdTimeStamp = time\nend\n\nif lastCmds ~= \"\" then\n  Trace( \"white\" , \"update : \" .. lastCmds .. \" / \" .. cmds , 4 )\n  if lastCmds:match( exitCmd ) ~= null then\n    lastCmds = UpdateCmds( lastCmds , false )\n    Trace( \"red\" , \"contain exit, do some commands, change to : \" .. lastCmds , 4 )\n  elseif time - cmdTimeStamp >= cmdUpdateSec then\n    lastCmds = UpdateCmds( lastCmds , true )\n    Trace( \"yellow\" , \"time's out, do all commands, change to : \" .. lastCmds , 4 )\n  else\n  end\nend\n\nif time - infoTimeStamp >= infoCleanSec then\n  fibaro:call( selfId , \"setProperty\" , \"ui.Info.value\" , \"\" )\n  infoTimeStamp = time\nend\n  \nfibaro:sleep( 500 )  \n  \nend", 
+    "port": 0
+  }, 
+  "visible": true, 
+  "sortOrder": 228, 
+  "type": "virtual_device", 
+  "id": 1240
+}

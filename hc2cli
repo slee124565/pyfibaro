@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+"""
+FLH Fibaro HC2 command line tool
+"""
+
+import argparse
+import logging
+
+if __name__ == '__main__':
+    
+    # -> common parser
+    from cmds.cmd_base import CMDBase
+    base_parser = CMDBase.get_base_parser()
+
+    # -> program parser start
+    parser = argparse.ArgumentParser(
+        description='Fibaro HC2 Command Line Utility Tool')
+
+    subparsers = parser.add_subparsers(
+        title='commands')
+    
+    # -> [remote] command arguments
+    from cmds.cmd_remote import CMDRemote
+    cmd_parser = CMDRemote.get_cmd_parser(base_parser, subparsers)
+
+    # -> [dev] command arguments
+    from cmds.cmd_dev import CMDDevice
+    cmd_parser = CMDDevice.get_cmd_parser(base_parser, subparsers)
+
+    # -> [vdev] command arguments
+    from cmds.cmd_vdev import CMDVDevice
+    cmd_parser = CMDVDevice.get_cmd_parser(base_parser, subparsers)
+
+    # -> [gvar] command arguments
+    from cmds.cmd_gvar import CMDVariable
+    cmd_parser = CMDVariable.get_cmd_parser(base_parser, subparsers)
+        
+    # -> [scene] command arguments
+    from cmds.cmd_scene import CMDScene
+    cmd_parser = CMDScene.get_cmd_parser(base_parser, subparsers)
+
+    # -> [service] command arguments
+    from cmds.cmd_service import CMDService
+    cmd_parser = CMDService.get_cmd_parser(base_parser, subparsers)
+
+    # -> [room] command arguments
+    from cmds.cmd_room import CMDRoom
+    cmd_parser = CMDRoom.get_cmd_parser(base_parser, subparsers)
+
+    # -> [daikin] command arguments
+    from cmds.cmd_daikin import CMDDaikin
+    cmd_parser = CMDDaikin.get_cmd_parser(base_parser, subparsers)
+
+    # -> [saporo] command arguments
+    from cmds.cmd_saporo import CMDSaporo
+    cmd_parser = CMDSaporo.get_cmd_parser(base_parser, subparsers)
+
+    # -> [topology] command arguments
+    from cmds.cmd_topology import CMDTopology
+    cmd_parser = CMDTopology.get_cmd_parser(base_parser, subparsers)
+
+    args = parser.parse_args()
+
+    # set logging
+    logging.basicConfig(
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
+
+    if args.debug:
+        log_level = logging.DEBUG
+    else:
+        log_level = logging.INFO
+        logging.getLogger("requests").setLevel(logging.WARNING)
+
+    logger = logging.getLogger()    
+    logger.setLevel(log_level)
+    logger.debug('args: %s' % str(args))
+
+    # set remote hc2 api server
+    remote_name = getattr(args, CMDBase.astr_remote_name,None)
+    if remote_name:
+        from cmds.remotes import RemoteCollection
+        t_remotes = RemoteCollection(args,logger)
+        t_remote = t_remotes[remote_name]
+        if t_remote:
+            setattr(args, CMDBase.astr_hostname, t_remote[CMDBase.astr_hostname])
+            setattr(args, CMDBase.astr_hostport, t_remote[CMDBase.astr_hostport])
+            setattr(args, CMDBase.astr_username, t_remote[CMDBase.astr_username])
+            setattr(args, CMDBase.astr_password, t_remote[CMDBase.astr_password])
+            from hc2cli_service import HC2CliService
+            hc2_api = HC2CliService(args,logger)
+            CMDBase.set_args_hc2(args, hc2_api)
+    else:
+        logger.debug('no remote hc2 server config for cmd execute')
+    
+    # exec cmd
+    args.func(args)
+
+    
+    
+    

@@ -1,0 +1,18 @@
+{
+  "UNITS": {
+    "100": {
+      "UNIT_NAME": "\u5ba2\u5ef3\u51b7\u6c23", 
+      "PI_PORT": 8080, 
+      "DAIKIN_SLAVE_IP": "192.168.1.71:8:100"
+    }, 
+    "101": {
+      "UNIT_NAME": "\u623f\u9593\u51b7\u6c23", 
+      "PI_PORT": 8080, 
+      "DAIKIN_SLAVE_IP": "192.168.1.71:8:101"
+    }
+  }, 
+  "PI_IP": "192.168.1.71", 
+  "MASTER_NAME": "\u51b7\u6c23\u9059\u63a7\u5668", 
+  "PI_PORT": 8080, 
+  "MODBUS_ID": 8
+}
